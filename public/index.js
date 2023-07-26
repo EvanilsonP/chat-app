@@ -12,5 +12,5 @@ function btnEntrar() {
     });
 
     // Direcionar para a página do chat passando os parametros na URL
-    window.location.href="chat.html?usuarionome=" + inputNome + "&meuId=" + IdUsuario;
+    window.location.href="chat.html?usuarionome=" + inputNome + "&meuid=" + IdUsuario;
 };

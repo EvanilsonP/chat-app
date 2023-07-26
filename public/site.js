@@ -1,4 +1,8 @@
 const inputTexto = document.getElementById('enviarMensagem');
+const getLocalStorage = () => JSON.parse(localStorage.getItem('usuario')) ?? [];
+const socket = io();
+const { usuarionome, meuid } = Qs.parse(location.search, { ignoreQueryPrefix: true });
+socket.emit('entrarSala', { usuarionome, meuid });
 
 inputTexto.addEventListener('keyup', function(e) {
     const key = e.key === 'Enter';
@@ -32,7 +36,7 @@ function adicionarNovaMensagem(mensagem) {
     const divDetalhes = criarElementoHTML('div', ['message-data']);
 
     span.innerHTML = "Nome teste, July 22";
-    divMensagem.innerHTML = mensagem;
+    divMensagem.innerHTML = mensagem.mensagem;
 
     divDetalhes.appendChild(span);
     li.appendChild(divDetalhes);
@@ -40,3 +44,7 @@ function adicionarNovaMensagem(mensagem) {
     quadroMensagens.appendChild(li);
     realizarScrollChat();
 };
+
+socket.on('novaMensagem', (mensagem) => {
+    adicionarNovaMensagem(mensagem);
+})

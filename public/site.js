@@ -62,6 +62,15 @@ function adicionarNovaMensagem(mensagem) {
     realizarScrollChat();
 };
 
+socket.on('salaUsuarios', ({ sala, usuarios}) => {
+    document.getElementById("salaId").innerHTML = sala;
+    document.getElementById("listaUsuarios").innerHTML = '';
+
+    for( const usuario of usuarios) {
+        criarListaUsuarios(usuario.nome);
+    }
+});
+
 socket.on('novaMensagem', (mensagem) => {
     adicionarNovaMensagem(mensagem);
 });
@@ -69,11 +78,11 @@ socket.on('novaMensagem', (mensagem) => {
 function criarListaUsuarios(usuarioNome) {
     
     var listaUsuarios = document.getElementById("listaUsuarios");
-    var liUsuario = criarElementoHtml("li", ["clearfix"]);
-    var divDescricaoUsuario = criarElementoHtml('div', ["about"]);
-    var divNomeUsuario = criarElementoHtml('div', ["name"]);
-    var divStatusUsuario = criarElementoHtml('div', ["status"]);
-    var iconeStatus = criarElementoHtml("i" , ["fa", "fa-circle", "online"]);
+    var liUsuario = criarElementoHTML("li", ["clearfix"]);
+    var divDescricaoUsuario = cr('div', ["about"]);
+    var divNomeUsuario = criarElementoHTML('div', ["name"]);
+    var divStatusUsuario = criarElementoHTML('div', ["status"]);
+    var iconeStatus = criarElementoHTML("i" , ["fa", "fa-circle", "online"]);
 
     iconeStatus.innerHTML = "online";
     divNomeUsuario.innerHTML = usuarioNome;

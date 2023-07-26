@@ -8,7 +8,8 @@ inputTexto.addEventListener('keyup', function(e) {
     const key = e.key === 'Enter';
 
     if(key && this.value) {
-        adicionarNovaMensagem(this.value);
+        // adicionarNovaMensagem(this.value);
+        socket.emit('mensagemChat', this.value);
         this.value = '';
     }
 });
@@ -29,13 +30,29 @@ function realizarScrollChat() {
 };
 
 function adicionarNovaMensagem(mensagem) {
+    const usuarioStorage = getLocalStorage();
+    const minhaMensagem = false;
+
+    if(mensagem.meuid) {
+        minhaMensagem = mensagem.meuid === usuarioStorage.meuid;
+    }
+
+    var divMensagem = '';
+    var divDetalhes = '';
+
     const quadroMensagens = document.getElementById('quadro-mensagens');
     const li = criarElementoHTML('li', ['clearfix']);
     const span = criarElementoHTML('span', ['message-data-time']);
-    const divMensagem = criarElementoHTML('div', ['message', 'my-message']);
-    const divDetalhes = criarElementoHTML('div', ['message-data']);
 
-    span.innerHTML = "Nome teste, July 22";
+    if(minhaMensagem) {
+        divMensagem = criarElementoHTML('div', ['message', 'other-message', 'float-right']);
+        divDetalhes = criarElementoHTML('div', ['message-data', 'text-right'])
+    } else {
+        var divMensagem = criarElementoHTML('div', ['message', 'my-message']);
+        var divDetalhes = criarElementoHTML('div', ['message-data']);
+    }
+
+    span.innerHTML = (minhaMensagem ? 'eu' : mensagem.usuarioNome) + ', ' + mensagem.horario;
     divMensagem.innerHTML = mensagem.mensagem;
 
     divDetalhes.appendChild(span);
@@ -47,4 +64,23 @@ function adicionarNovaMensagem(mensagem) {
 
 socket.on('novaMensagem', (mensagem) => {
     adicionarNovaMensagem(mensagem);
-})
+});
+
+function criarListaUsuarios(usuarioNome) {
+    
+    var listaUsuarios = document.getElementById("listaUsuarios");
+    var liUsuario = criarElementoHtml("li", ["clearfix"]);
+    var divDescricaoUsuario = criarElementoHtml('div', ["about"]);
+    var divNomeUsuario = criarElementoHtml('div', ["name"]);
+    var divStatusUsuario = criarElementoHtml('div', ["status"]);
+    var iconeStatus = criarElementoHtml("i" , ["fa", "fa-circle", "online"]);
+
+    iconeStatus.innerHTML = "online";
+    divNomeUsuario.innerHTML = usuarioNome;
+
+    divStatusUsuario.appendChild(iconeStatus);
+    divDescricaoUsuario.appendChild(divNomeUsuario);
+    divDescricaoUsuario.appendChild(divStatusUsuario);
+    liUsuario.appendChild(divDescricaoUsuario);
+    listaUsuarios.appendChild(liUsuario);
+};

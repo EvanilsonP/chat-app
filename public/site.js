@@ -1,4 +1,5 @@
 const inputTexto = document.getElementById('enviarMensagem');
+const btnSair  = document.getElementById('btnSair');
 const getLocalStorage = () => JSON.parse(localStorage.getItem('usuario')) ?? [];
 const socket = io();
 const { usuarionome, meuid } = Qs.parse(location.search, { ignoreQueryPrefix: true });
@@ -12,6 +13,14 @@ inputTexto.addEventListener('keyup', function(e) {
         socket.emit('mensagemChat', this.value);
         this.value = '';
     }
+});
+
+btnSair.addEventListener('click', function() {
+    const sairSala = confirm('Certeza que deseja sair da sala?');
+    if(sairSala) {
+        socket.emit('sairSala');
+        window.location.href='index.html';
+    };
 });
 
 function criarElementoHTML(nomeElemento, classeElemento) {
@@ -79,7 +88,7 @@ function criarListaUsuarios(usuarioNome) {
     
     var listaUsuarios = document.getElementById("listaUsuarios");
     var liUsuario = criarElementoHTML("li", ["clearfix"]);
-    var divDescricaoUsuario = cr('div', ["about"]);
+    var divDescricaoUsuario = criarElementoHTML('div', ["about"]);
     var divNomeUsuario = criarElementoHTML('div', ["name"]);
     var divStatusUsuario = criarElementoHTML('div', ["status"]);
     var iconeStatus = criarElementoHTML("i" , ["fa", "fa-circle", "online"]);

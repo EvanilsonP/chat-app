@@ -22,7 +22,7 @@ function mensagemFormatada(usuarioNome, mensagemParam, meuid) {
     return { usuarioNome, mensagem, horario: moment().format('lll'), meuid };
 };
 
-function getUsuarioSala() {
+function getUsuariosSala() {
     return usuarios;
 };
 
@@ -30,4 +30,4 @@ function getUsuario(idUsuario) {
     return usuarios.find(usuario => usuario.id === idUsuario);
 }
 
-module.exports = { usuarioEntrarSala, usuarioSairSala, mensagemFormatada, getUsuarioSala, getUsuario };
+module.exports = { usuarioEntrarSala, usuarioSairSala, mensagemFormatada, getUsuariosSala, getUsuario };
